@@ -1,0 +1,25 @@
+{
+  "name": "@buggyorg/delinkify",
+  "version": "0.1.0",
+  "description": "Finds all links in a graph and replaces them with edges modifying the corresponding compounds.",
+  "main": "./lib/api.js",
+  "scripts": {
+    "test": "standard src/**/*.js && mocha --compilers js:babel-register",
+    "build": "babel src -d lib",
+    "prepublish": "babel src -d lib"
+  },
+  "author": "Maximilian Klein",
+  "license": "MIT",
+  "devDependencies": {
+    "babel-cli": "^6.6.5",
+    "babel-preset-es2015": "^6.3.13",
+    "babel-register": "^6.3.13",
+    "chai": "^3.5.0",
+    "mocha": "^2.4.5",
+    "standard": "^6.0.8"
+  },
+  "dependencies": {
+    "@buggyorg/graphtools": "^0.2.20",
+    "lodash": "^4.13.1"
+  }
+}
