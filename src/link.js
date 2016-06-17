@@ -44,9 +44,9 @@ export function getAuxPorts (graph, link) {
 
 export function getAuxEdges (graph, link) {
   var connection = utils.hierarchyConnection(graph, link)
-  return changeSet.createNodeConnect([
+  return [changeSet.createConnection([
     {node: link.v},
     _.map(connection, (c) => ({node: c, port: portName(link)})),
     {node: link.w}
-  ])
+  ]), changeSet.removeEdge(link)]
 }
