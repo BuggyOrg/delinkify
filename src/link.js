@@ -9,8 +9,9 @@ import { utils, changeSet } from '@buggyorg/graphtools'
  */
 export function allLinks (graph) {
   return _(graph.edges())
-    .map((e) => _.merge({}, e, {vParent: graph.parent(e.v), wParent: graph.parent(e.w)}))
+    .map((e) => _.merge({}, e, {vParent: graph.parent(e.v), wParent: graph.parent(e.w), original: e}))
     .reject((e) => e.vParent === e.wParent || e.vParent === e.w || e.v === e.wParent)
+    .map((e) => _.merge({}, e.original, {value: graph.edge(e.original)}))
     .value()
 }
 
@@ -29,13 +30,13 @@ export function checkLink (graph, link) {
   return nodes.length === 0
 }
 
-const portName = (link) => 'aux_' + utils.linkName(link)
+const portName = (link) => 'aux_' + utils.linkName(link, false)
 
 /**
  * Creates auxiliary ports for a link that will enable cross-compound communications
  * @param {Graphlib} graph The graph
  * @param {Link} link The link that needs to go through compounds
- * @return {ChangeSet} A changeset that contains the auxiliary ports.
+ * @return {ChangeSet[]} A changeset that contains the auxiliary ports.
  */
 export function getAuxPorts (graph, link) {
   var connection = utils.hierarchyConnection(graph, link)
@@ -44,9 +45,7 @@ export function getAuxPorts (graph, link) {
 
 export function getAuxEdges (graph, link) {
   var connection = utils.hierarchyConnection(graph, link)
-  return [changeSet.createConnection([
-    {node: link.v},
+  return _.concat(changeSet.createConnection(_.concat([{node: link.v}],
     _.map(connection, (c) => ({node: c, port: portName(link)})),
-    {node: link.w}
-  ]), changeSet.removeEdge(link)]
+    [{node: link.w}])), [changeSet.removeEdge(link)])
 }

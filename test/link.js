@@ -32,11 +32,10 @@ describe('Graph links', () => {
     expect(genPorts).to.have.length(1)
   })
 
-  it.only('creates auxiliary ports for each link', () => {
+  it('creates auxiliary ports for each link', () => {
     var facIf = graph.readFromFile('test/fixtures/factorial_if_cont.json')
     var lnks = links.allLinks(facIf)
     var genEdges = links.getAuxEdges(facIf, lnks[0])
-    console.log(genEdges)
-    expect(genEdges).to.have.length(1)
+    expect(genEdges).to.have.length(3)
   })
 })
