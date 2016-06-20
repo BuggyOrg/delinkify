@@ -40,12 +40,13 @@ const portName = (link) => 'aux_' + utils.linkName(link, false)
  */
 export function getAuxPorts (graph, link) {
   var connection = utils.hierarchyConnection(graph, link)
-  return _.map(connection, (c) => changeSet.updateNode(c, {auxilliaryPorts: [{name: portName(link), type: 'bool'}]}))
+  return _.map(connection, (c) => changeSet.updateNode(c, {auxilliaryPorts: [{node: link.w, name: portName(link), type: 'bool'}]}))
 }
 
 export function getAuxEdges (graph, link) {
   var connection = utils.hierarchyConnection(graph, link)
+  console.error(link)
   return _.concat(changeSet.createConnection(_.concat([{node: link.v}],
     _.map(connection, (c) => ({node: c, port: portName(link)})),
-    [{node: link.w}])), [changeSet.removeEdge(link)])
+    [{node: link.w}]), _.omit(link.value, ['inPort', 'outPort'])), [changeSet.removeEdge(link)])
 }
