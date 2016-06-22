@@ -1,6 +1,6 @@
 {
   "name": "@buggyorg/delinkify",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Finds all links in a graph and replaces them with edges modifying the corresponding compounds.",
   "main": "./lib/api.js",
   "scripts": {
